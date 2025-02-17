@@ -4,7 +4,7 @@
 #include <string>
 
 std::vector<std::vector<int>> create_image_v(const std::string &img_file);
-void printMatrix(const std::vector<std::vector<char>> &matrix);
+void printMatrix(const std::vector<std::vector<int>> &matrix);
 std::vector<int> create_check_sum_v(const std::string &checksum_file);
 int validate_image(const std::vector<std::vector<int>> &image, const std::vector<int> checksum);
 
@@ -16,22 +16,23 @@ int main(int argc, char* argv[]) {
     std::vector<std::vector<int>> image = create_image_v(argv[1]);
     std::vector<int> checksum = create_check_sum_v(argv[2]);
     
-    validate_image(image, checksum);
-
-    printMatrix(image);
-
+    return validate_image(image, checksum);
 }
 
-int validate_image(const std::vector<std::vector<char>> &image, const std::vector<char> checksum){
+int validate_image(const std::vector<std::vector<int>> &image, const std::vector<int> checksum){
     
     if(image.size() != checksum.size()){
-        std::cerr << "The image and checksum need the same number of rows." << std::endl;
-        return -2;
+        std::cerr << "The image and checksum need the same number of rows." 
+        << image.size()
+         << " "
+        << checksum.size()
+        << std::endl;
+        return 2;
     }
     
     for(size_t row = 0; row < image.size(); row++){
         int sum = 0;
-        for(size_t column; column < image.size(); column++){
+        for(size_t column = 0; column < image[row].size(); column++){
             sum += image[row][column];
         }
 
@@ -40,10 +41,12 @@ int validate_image(const std::vector<std::vector<char>> &image, const std::vecto
             << checksum[row]
             << "Actual: "
             << sum;
-            return -3;
+            return 3;
         }
         
     }
+
+    std::cout << "Pass" << std::endl;
     return 0;
 }
 
@@ -75,11 +78,20 @@ std::vector<std::vector<int>> create_image_v(const std::string &img_file){
         std::cerr << "Not able to open file." << std::endl;
         return ascii_vector;
     }
+    std::string img_format;
+    file >> img_format;
+    if(img_format != "P3"){
+        std::cerr << "File format error. Expected P3 but got " << img_format << std::endl;
+        return ascii_vector;
+    }
 
     int columns, rows, max_val;
     file >> columns >> rows >> max_val;
+    if(columns < 1 || rows < 1 || max_val < 0){
+        std::cerr << "Specifications can not be negative.";
+        return ascii_vector;
+    }
 
-    std::vector<std::vector<int>> image;
     for (int row = 0; row < rows; row++){
         std::vector<int> row_values;
         for(int column = 0; column < columns * 3; column++){
@@ -95,11 +107,10 @@ std::vector<std::vector<int>> create_image_v(const std::string &img_file){
     return ascii_vector;
 }
 
-
 void printMatrix(const std::vector<std::vector<int>>& matrix) {
     for (const auto& row : matrix) {
-        for (char c : row) {
-            std::cout << c ;
+        for (int val : row) {
+            std::cout << val << " ";
         }
         std::cout << std::endl;
     }
