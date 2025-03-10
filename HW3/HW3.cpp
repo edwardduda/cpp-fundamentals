@@ -83,7 +83,15 @@ std::vector<std::vector<int>> create_image_v(const std::string &img_file){
 }
 
 std::vector<int> compute_row_checksum_v(const std::vector<std::vector<int>> &image) {
-
+    std::vector<int> row_sums;
+    for(size_t row = 0; row < image.size(); row++){
+        int sum = 0;
+        for(size_t column = 0; column < image[row].size(); column++){
+            sum += image[row][column];
+        }
+        row_sums.push_back(sum);
+    }
+    return row_sums;
 }
 
 std::vector<int> compute_col_checksum_v(const std::vector<std::vector<int>> &image) {
