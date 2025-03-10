@@ -12,7 +12,7 @@ std::vector<int> compute_col_checksum_v(const std::vector<std::vector<int>> &ima
 
 int main(int argc, char* argv[]) {
     if(argc != 4){
-        std::cout << "Not enought arguments\n" << std::endl;
+        std::cout << "Not correct number of arguments\n" << std::endl;
         std::cout << "Format: <img_file> <row_checksum_output> <col_checksum_output>" << std::endl;
         return -1;
     }
@@ -22,6 +22,41 @@ int main(int argc, char* argv[]) {
     }
     std::vector<int> checksum = create_check_sum_v(argv[2]);
     
+    std::vector<int> computedRowChecksum = compute_row_checksum_v(image);
+    std::vector<int> computedColChecksum = compute_col_checksum_v(image);
+    
+    std::vector<int> expectedRowChecksum = create_check_sum_v(argv[2]);
+    std::vector<int> expectedColChecksum = create_check_sum_v(argv[3]);
+
+    if(computedRowChecksum.size() != expectedRowChecksum.size()){
+        std::cerr << "Mismatch in number of row checksums: computed (" 
+                  << computedRowChecksum.size() << ") vs expected ("
+                  << expectedRowChecksum.size() << ")\n";
+        return -1;
+    }
+    for(size_t i = 0; i < computedRowChecksum.size(); i++){
+        if(computedRowChecksum[i] != expectedRowChecksum[i]){
+            std::cerr << "Row " << i << " mismatch: computed " << computedRowChecksum[i]
+                      << " vs expected " << expectedRowChecksum[i] << "\n";
+            return -1;
+        }
+    }
+
+    if(computedColChecksum.size() != expectedColChecksum.size()){
+        std::cerr << "Mismatch in number of column checksums: computed ("
+                  << computedColChecksum.size() << ") vs expected ("
+                  << expectedColChecksum.size() << ")\n";
+        return -1;
+    }
+    for(size_t i = 0; i < computedColChecksum.size(); i++){
+        if(computedColChecksum[i] != expectedColChecksum[i]){
+            std::cerr << "Column " << i << " mismatch: computed " << computedColChecksum[i]
+                      << " vs expected " << expectedColChecksum[i] << "\n";
+            return -1;
+        }
+    }
+
+        std::cout << "All checksums match!" << std::endl;
     return 0;
 }
 
