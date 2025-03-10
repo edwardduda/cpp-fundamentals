@@ -95,7 +95,26 @@ std::vector<int> compute_row_checksum_v(const std::vector<std::vector<int>> &ima
 }
 
 std::vector<int> compute_col_checksum_v(const std::vector<std::vector<int>> &image) {
+    std::vector<int> col_sums;
+    if(image.empty()){
+        return col_sums;
+    }
 
+    int totalElements = image[0].size();
+    int width = totalElements / 3;
+    int height = image.size();
+    
+    for (int col = 0; col < width; col++){
+        int sum = 0;
+        for (int row = 0; row < height; row++){
+            int baseIndex = col * 3;
+            sum += image[row][baseIndex]     // Red
+                 + image[row][baseIndex + 1] // Green
+                 + image[row][baseIndex + 2]; // Blue
+        }
+        col_sums.push_back(sum);
+    }
+    return col_sums;
 }
 
 //Present for debugging
