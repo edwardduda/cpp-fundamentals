@@ -30,17 +30,17 @@ std::vector<int> create_check_sum_v(const std::string &checksum_file){
 
     std::fstream file(checksum_file);
     if(!file){
-        std::cerr << "Not able to open file." << std::endl;
+        std::cerr << "Not able to open file: " << checksum_file << std::endl;
         return check_sum_v;
     }
 
-    int row_sum;
-    while (file >> row_sum) {
-        check_sum_v.push_back(row_sum);
+    int value;
+    while (file >> value) {
+        check_sum_v.push_back(value);
     }
 
-    file.close();
 
+    file.close();
     return check_sum_v;
 }
 
