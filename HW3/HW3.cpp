@@ -17,6 +17,9 @@ int main(int argc, char* argv[]) {
         return -1;
     }
     std::vector<std::vector<int>> image = create_image_v(argv[1]);
+    if(image.empty()){
+        return -1;
+    }
     std::vector<int> checksum = create_check_sum_v(argv[2]);
     
     return 0;
