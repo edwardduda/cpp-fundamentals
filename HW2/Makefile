@@ -1,4 +1,4 @@
-NETID=edward
+NETID=edwardd
 #Used for naming your tar file
 ASN=HW2
 #Used for naming the executable
