@@ -11,7 +11,7 @@ int validate_image(const std::vector<std::vector<int>> &image, const std::vector
 int main(int argc, char* argv[]) {
     if(argc != 3){
         std::cout << "Not enought arguments\n";
-        return 1;
+        return -1;
     }
     std::vector<std::vector<int>> image = create_image_v(argv[1]);
     std::vector<int> checksum = create_check_sum_v(argv[2]);
@@ -27,7 +27,7 @@ int validate_image(const std::vector<std::vector<int>> &image, const std::vector
          << " "
         << checksum.size()
         << std::endl;
-        return 2;
+        return -2;
     }
     
     for(size_t row = 0; row < image.size(); row++){
@@ -41,7 +41,7 @@ int validate_image(const std::vector<std::vector<int>> &image, const std::vector
             << checksum[row]
             << "Actual: "
             << sum;
-            return 3;
+            return -3;
         }
         
     }
