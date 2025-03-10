@@ -6,47 +6,19 @@
 std::vector<std::vector<int>> create_image_v(const std::string &img_file);
 void printMatrix(const std::vector<std::vector<int>> &matrix);
 std::vector<int> create_check_sum_v(const std::string &checksum_file);
-int validate_image(const std::vector<std::vector<int>> &image, const std::vector<int> checksum);
+
+std::vector<int> compute_row_checksum_v(const std::vector<std::vector<int>> &image);
+std::vector<int> compute_col_checksum_v(const std::vector<std::vector<int>> &image);
 
 int main(int argc, char* argv[]) {
-    if(argc != 3){
-        std::cout << "Not enought arguments\n";
+    if(argc != 4){
+        std::cout << "Not enought arguments\n" << std::endl;
+        std::cout << "Format: <img_file> <row_checksum_output> <col_checksum_output>" << std::endl;
         return -1;
     }
     std::vector<std::vector<int>> image = create_image_v(argv[1]);
     std::vector<int> checksum = create_check_sum_v(argv[2]);
     
-    return validate_image(image, checksum);
-}
-
-int validate_image(const std::vector<std::vector<int>> &image, const std::vector<int> checksum){
-    
-    if(image.size() != checksum.size()){
-        std::cerr << "The image and checksum need the same number of rows." 
-        << image.size()
-         << " "
-        << checksum.size()
-        << std::endl;
-        return -2;
-    }
-    
-    for(size_t row = 0; row < image.size(); row++){
-        int sum = 0;
-        for(size_t column = 0; column < image[row].size(); column++){
-            sum += image[row][column];
-        }
-
-        if(sum != checksum[row]){
-            std::cerr << "Image row and check row aren't equal. Expect sum: "
-            << checksum[row]
-            << "Actual: "
-            << sum;
-            return -3;
-        }
-        
-    }
-
-    std::cout << "Pass" << std::endl;
     return 0;
 }
 
@@ -107,6 +79,15 @@ std::vector<std::vector<int>> create_image_v(const std::string &img_file){
     return ascii_vector;
 }
 
+std::vector<int> compute_row_checksum_v(const std::vector<std::vector<int>> &image) {
+
+}
+
+std::vector<int> compute_col_checksum_v(const std::vector<std::vector<int>> &image) {
+
+}
+
+//Present for debugging
 void printMatrix(const std::vector<std::vector<int>>& matrix) {
     for (const auto& row : matrix) {
         for (int val : row) {
@@ -115,7 +96,3 @@ void printMatrix(const std::vector<std::vector<int>>& matrix) {
         std::cout << std::endl;
     }
 }
-
-
-
-
