@@ -12,7 +12,6 @@ void normalize_image(std::vector<std::vector<int>> &image, int max_possible_val)
 void write_normalized_image(const std::string &output_file, const std::vector<std::vector<int>> &image, int columns, int rows, int max_val);
 
 int g_columns = 0, g_rows = 0, g_max_val = 0;
-
 int main(int argc, char* argv[]) {
     if(argc != 3){
         std::cout << "Not enought arguments\n";
