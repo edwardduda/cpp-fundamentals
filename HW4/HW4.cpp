@@ -137,6 +137,12 @@ void normalize_image(std::vector<std::vector<int>> &image, int max_possible_val)
 
     if(max_val == min_val){
         std::cerr << "All pixels have the same intensity. Normalization will fail." << std::endl;
+        for(auto &row : image){
+            for(auto &val : row){
+                val = 0;
+            }
+        }
+        return;
     }
 
     for(auto &row : image){
