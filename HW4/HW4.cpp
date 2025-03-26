@@ -8,6 +8,10 @@ std::vector<std::vector<int>> create_image_v(const std::string &img_file);
 void printMatrix(const std::vector<std::vector<int>> &matrix);
 std::vector<int> create_check_sum_v(const std::string &checksum_file);
 int validate_image(const std::vector<std::vector<int>> &image, const std::vector<int> checksum);
+void normalize_image(std::vector<std::vector<int>> &image, int max_possible_val);
+void write_normalized_image(const std::string &output_file, const std::vector<std::vector<int>> &image, int columns, int rows, int max_val);
+
+int g_columns = 0, g_rows = 0, g_max_val = 0;
 
 int main(int argc, char* argv[]) {
     if(argc != 3){
@@ -107,6 +111,7 @@ std::vector<std::vector<int>> create_image_v(const std::string &img_file){
     
     return ascii_vector;
 }
+
 void normalize_image(std::vector<std::vector<int>> &image, int max_possible_val){
     int min_val = max_possible_val, max_val = 0;
 
@@ -131,6 +136,28 @@ void normalize_image(std::vector<std::vector<int>> &image, int max_possible_val)
             val = static_cast<int>(std::round(normalized));
         }
     }
+}
+
+void write_normalized_image(const std::string &outputfile, const std::vector<std::vector<int>> &image, int columns, int rows, int max_val){
+    std::ofstream file(outputfile);
+    if(!file){
+        std::cerr << "Error: Unable to open output file." << std::endl;
+        std::exit(-1);
+    }
+
+    file << "P3" << "\n";
+    file << columns << " " << rows << "\n";
+    file << max_val << "\n";
+
+    for(const auto &row : image){
+        for(int val : row){
+            file << val << " ";
+        }
+        file << "\n";
+    }
+
+    file.close();
+
 }
 void printMatrix(const std::vector<std::vector<int>>& matrix) {
     for (const auto& row : matrix) {
