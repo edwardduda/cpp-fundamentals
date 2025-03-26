@@ -2,6 +2,7 @@
 #include <fstream>
 #include <vector>
 #include <string>
+#include <cmath>
 
 std::vector<std::vector<int>> create_image_v(const std::string &img_file);
 void printMatrix(const std::vector<std::vector<int>> &matrix);
@@ -106,7 +107,31 @@ std::vector<std::vector<int>> create_image_v(const std::string &img_file){
     
     return ascii_vector;
 }
+void normalize_image(std::vector<std::vector<int>> &image, int max_possible_val){
+    int min_val = max_possible_val, max_val = 0;
 
+    for(const auto &row : image){
+        for(int val : row){
+            if(val < min_val){
+                min_val = val;
+            }
+            if(val > max_val){
+                max_val = val;
+            }
+        }
+    }
+
+    if(max_val == min_val){
+        std::cerr << "All pixels have the same intensity. Normalization will fail." << std::endl;
+    }
+
+    for(auto &row : image){
+        for(auto &val : row) {
+            double normalized = (static_cast<double>(val - min_val) / (max_val - min_val)) * max_possible_val;
+            val = static_cast<int>(std::round(normalized));
+        }
+    }
+}
 void printMatrix(const std::vector<std::vector<int>>& matrix) {
     for (const auto& row : matrix) {
         for (int val : row) {
