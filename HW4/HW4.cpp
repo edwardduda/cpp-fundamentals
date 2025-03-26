@@ -3,6 +3,7 @@
 #include <vector>
 #include <string>
 #include <cmath>
+#include <cstdlib>
 
 std::vector<std::vector<int>> create_image_v(const std::string &img_file);
 void printMatrix(const std::vector<std::vector<int>> &matrix);
@@ -18,9 +19,18 @@ int main(int argc, char* argv[]) {
         return -1;
     }
     std::vector<std::vector<int>> image = create_image_v(argv[1]);
-    std::vector<int> checksum = create_check_sum_v(argv[2]);
     
-    return validate_image(image, checksum);
+    if(image.empty()){
+        // Error messages already printed in create_image_v.
+        return -1;
+    }
+
+    normalize_image(image, g_max_val);
+
+    write_normalized_image(argv[2], image, g_columns, g_rows, g_max_val);
+
+    std::cout << "Image normalized and written successfully." << std::endl;
+    return 0;
 }
 
 int validate_image(const std::vector<std::vector<int>> &image, const std::vector<int> checksum){
@@ -31,7 +41,7 @@ int validate_image(const std::vector<std::vector<int>> &image, const std::vector
          << " "
         << checksum.size()
         << std::endl;
-        return -2;
+        return -1;
     }
     
     for(size_t row = 0; row < image.size(); row++){
@@ -45,7 +55,7 @@ int validate_image(const std::vector<std::vector<int>> &image, const std::vector
             << checksum[row]
             << "Actual: "
             << sum;
-            return -3;
+            return -1;
         }
         
     }
